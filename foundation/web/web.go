@@ -26,7 +26,10 @@ func NewApp(shutdown chan os.Signal) *App {
 
 func (a *App) HandleFunc(method string, path string, handler Handler) {
 	h := func(w http.ResponseWriter, r *http.Request) {
-		handler(r.Context(), w, r)
+		if err := handler(r.Context(), w, r); err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
 
 	a.ServeMux.HandleFunc(fmt.Sprintf("%s %s", method, path), h)
