@@ -5,11 +5,13 @@ import (
 	"os"
 
 	"github.com/ortin779/service/apis/services/sales/route/sys/checkapi"
+	"github.com/ortin779/service/app/api/mid"
+	"github.com/ortin779/service/foundation/logger"
 	"github.com/ortin779/service/foundation/web"
 )
 
-func WebAPI(shutdown chan os.Signal) http.Handler {
-	mux := web.NewApp(shutdown)
+func WebAPI(log *logger.Logger, shutdown chan os.Signal) http.Handler {
+	mux := web.NewApp(shutdown, mid.Logger(log))
 
 	checkapi.Routes(mux)
 
